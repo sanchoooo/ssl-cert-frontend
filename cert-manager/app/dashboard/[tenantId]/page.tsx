@@ -1,26 +1,12 @@
-// app/dashboard/[tenantId]/page.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import { base64UrlDecode } from '../../../lib/utils';
 
 interface ScanData {
   [key: string]: any;
-}
-
-// Browser-compatible base64url decoder
-function base64UrlDecode(str: string): string {
-  try {
-    // Replace URL-safe characters
-    const base64 = str.replace(/-/g, '+').replace(/_/g, '/');
-    // Pad with '=' signs
-    const padded = base64.padEnd(base64.length + (4 - base64.length % 4) % 4, '=');
-    // Decode and convert to UTF-8
-    return decodeURIComponent(atob(padded).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
-  } catch (e) {
-    console.error("Failed to decode base64url string:", e);
-    return '';
-  }
 }
 
 export default function CertificateDetailsPage() {
@@ -59,7 +45,14 @@ export default function CertificateDetailsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Certificate Details for {decodedTenantName}</h1>
+        <div className="flex justify-between items-center mb-4">
+            <h1 className="text-2xl font-bold">Certificate Details for {decodedTenantName}</h1>
+            <Link href={`/dashboard/${tenantId}/edit`}>
+                <span className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 cursor-pointer">
+                    Edit Configuration
+                </span>
+            </Link>
+        </div>
       {scanData ? (
         <pre className="text-xs whitespace-pre-wrap">{JSON.stringify(scanData, null, 2)}</pre>
       ) : (
