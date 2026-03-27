@@ -1,5 +1,6 @@
 "use client";
 
+import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Configuration from '../../components/configuration';
